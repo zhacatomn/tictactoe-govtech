@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+}
+
+.game-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 30%;
+}
+
+.game-button {
+  border: none;
+  padding: 2rem;
+  aspect-ratio: 1/1;
+  font-size: 3rem;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.game-button:hover {
+  background-color: #d1d1d1;
+}
