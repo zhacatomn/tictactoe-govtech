@@ -11,7 +11,7 @@ $ npm install // You only need to do this if it's your first time running the ap
 $ npm start
 ```
 
-On a **separate** command line, in the folder on the repository, we now need to turn on the client:
+On a **separate** command line, in the folder of the repository, we now need to turn on the client:
 
 ```
 $ cd client
