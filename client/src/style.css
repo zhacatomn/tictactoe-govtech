@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: "DM Sans";
 }
 
 .game-container {
@@ -8,6 +9,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.game-message {
+  font-size: 2rem;
 }
 
 .game {
@@ -21,10 +28,29 @@
   padding: 2rem;
   aspect-ratio: 1/1;
   font-size: 3rem;
-  cursor: pointer;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.game-button:hover {
+.game-button:not(.no-hover):hover {
   background-color: #d1d1d1;
+  cursor: pointer;
+}
+
+.game-button:disabled {
+  color: unset;
+}
+
+@media (max-width: 700px) {
+  .game-button {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .game-button {
+    font-size: 1rem;
+  }
 }
