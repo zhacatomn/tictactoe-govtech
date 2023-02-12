@@ -32,10 +32,12 @@ io.on("connection", (socket) => {
     }
     if (room.isPlayerInRoom(player)) {
       return callback();
+    } else if (room.isRoomFull()) {
+      return callback({ error: "The room is full." });
     }
     room.addPlayer(player);
-    info(`${name} (${socket.id}) joined room ${roomId}`);
     player.name = name;
+    info(`${player.toString()} joined room ${roomId}`);
     callback({ message: "Room joined successfully." });
     // Automatically starting a game if the room is full
     if (room.isRoomFull()) {
