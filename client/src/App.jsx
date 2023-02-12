@@ -4,14 +4,14 @@ import "./style.css";
 const BUTTON_BORDER_STYLE = "5px solid black";
 const NUM_ROWS = 3;
 const NUM_COLS = 3;
-const GAME_CHARS = ["X", "O"];
+const PLAYER_TOKENS = ["X", "O"];
 const EMPTY_SPACE = "";
 
 function App() {
   const [gameState, setGameState] = useState(
-    Array(3)
+    Array(NUM_ROWS)
       .fill(null)
-      .map(() => Array.of("", "", ""))
+      .map(() => Array(NUM_COLS).fill(EMPTY_SPACE))
   );
   const [gameHistory, setGameHistory] = useState([]);
   const [turn, setTurn] = useState(0);
@@ -28,7 +28,7 @@ function App() {
     }
     const newGameState = gameState.map((rowArr, rowIdx) => {
       return rowArr.map((ele, colIdx) =>
-        rowIdx === row && colIdx === col ? GAME_CHARS[turn] : ele
+        rowIdx === row && colIdx === col ? PLAYER_TOKENS[turn] : ele
       );
     });
     setGameHistory([...gameHistory, gameState]);
@@ -39,11 +39,11 @@ function App() {
   return (
     <div className="game-container">
       <div className="game">
-        {Array(9)
+        {Array(NUM_ROWS * NUM_COLS)
           .fill(null)
           .map((_, idx) => {
-            const currRow = Math.floor(idx / 3);
-            const currCol = idx % 3;
+            const currRow = Math.floor(idx / NUM_ROWS);
+            const currCol = idx % NUM_COLS;
             return (
               <button
                 style={{
