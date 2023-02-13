@@ -95,7 +95,7 @@ const disconnect = (io, socket, player) => () => {
     room.removePlayer(player);
     if (room.isRoomEmpty()) {
       // Removing rooms that are not in use
-      global.socketToPlayerMap.delete(socket);
+      global.roomIdToRoomMap.delete(room.id);
     }
     return;
   }

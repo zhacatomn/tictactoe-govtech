@@ -45,7 +45,7 @@ class Room {
     }
     player.room = null;
     player.socket.leave(this.id);
-    this.players = this.players.map((ele) => !player.isSameAs(ele));
+    this.players = this.players.filter((ele) => !player.isSameAs(ele));
   }
 
   getWaitingPlayer() {
