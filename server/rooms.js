@@ -1,9 +1,26 @@
 const { EMPTY_SPACE, NUM_COLS, NUM_ROWS } = require("./constants");
+const { info } = require("console");
 
 const gameStatusEnum = {
   WAITING: 0,
   IN_PROGRESS: 1,
   ENDED: 2,
+};
+
+const destroyRoom = (roomId) => {
+  if (!global.roomIdToRoomMap.has(roomId)) {
+    return;
+  }
+  global.roomIdToRoomMap.delete(roomId);
+  info(`Destroyed Room ${roomId}`);
+};
+
+const createRoom = (roomId) => {
+  if (global.roomIdToRoomMap.has(roomId)) {
+    return;
+  }
+  global.roomIdToRoomMap.set(roomId, new Room(roomId));
+  info(`Created Room ${roomId}`);
 };
 
 class Room {
@@ -37,10 +54,16 @@ class Room {
     }
     this.players.push(player);
     player.room = this;
+    player.hasLeftRoom = false;
   }
 
   removePlayer(player) {
-    if (!this.isPlayerInRoom(player)) {
+    // Do not remove players once the game starts. This is to keep track
+    // of which players were originally in the game.
+    if (
+      !this.isPlayerInRoom(player) ||
+      this.gameStatus !== gameStatusEnum.WAITING
+    ) {
       return false;
     }
     player.room = null;
@@ -174,4 +197,4 @@ class Room {
   }
 }
 
-module.exports = { Room, gameStatusEnum };
+module.exports = { Room, gameStatusEnum, destroyRoom, createRoom };

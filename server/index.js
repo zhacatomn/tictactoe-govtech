@@ -2,7 +2,7 @@ const express = require("express");
 const socketio = require("socket.io");
 const http = require("http");
 const cors = require("cors");
-const { Room } = require("./rooms");
+const { Room, createRoom } = require("./rooms");
 const Player = require("./players");
 const { info } = require("console");
 const { joinRoom, makeMove, disconnect, exitRoom } = require("./events");
@@ -28,7 +28,7 @@ app.get("/createRoom", (req, res) => {
         roomId + String.fromCharCode(Math.floor(Math.random() * 26) + 65);
     }
   } while (global.roomIdToRoomMap.has(roomId));
-  global.roomIdToRoomMap.set(roomId, new Room(roomId));
+  createRoom(roomId);
   res.status(200).json({ roomId });
 });
 

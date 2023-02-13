@@ -20,6 +20,12 @@
   align-items: center;
 }
 
+.game-header,
+.game-message,
+.game-alert {
+  text-align: center;
+}
+
 .game-button:not(.no-hover):hover {
   background-color: #d1d1d1;
   cursor: pointer;

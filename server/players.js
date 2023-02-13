@@ -3,6 +3,7 @@ module.exports = class Player {
     this.socket = socket;
     this.name = null;
     this.room = null;
+    this.hasLeftRoom = false;
   }
   isSameAs(otherPlayer) {
     return this.socket.id === otherPlayer.socket.id;

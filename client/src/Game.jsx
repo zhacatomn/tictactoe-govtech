@@ -43,6 +43,7 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState(gameStatusEnum.WAITING);
   const [gameResult, setGameResult] = useState("");
   const [playerNames, setPlayerNames] = useState([]);
+  const [gameAlert, setGameAlert] = useState(null);
 
   useEffect(() => {
     socket.emit("joinRoom", { name, roomId }, (response) => {
@@ -66,18 +67,17 @@ const Game = () => {
       setTurn(turn);
     });
 
+    socket.on("alertGame", ({ alert }) => {
+      setGameAlert(alert ?? null);
+    });
+
     socket.on("endGame", ({ reason }) => {
-      console.log(reason);
       setGameResult(reason);
       setGameStatus(gameStatusEnum.ENDED);
     });
 
     return () => {
-      // On development, React likes to "double run" lifecycles. This will trick the backend into thinking
-      // that the client has left the room.
-      if (process.env.NODE_ENV !== "development") {
-        socket.emit("exitRoom", {}, () => {});
-      }
+      socket.emit("exitRoom", {}, () => {});
       socket.off("startGame");
       socket.off("updateGame");
       socket.off("endGame");
@@ -147,6 +147,7 @@ const Game = () => {
   return (
     <>
       <h1 class="game-header">{headerContent}</h1>
+      {gameAlert != null && <h2 className="game-alert">{gameAlert}</h2>}
       <h2 className={`game-message ${messageColor}`}>{messageContent}</h2>
       <div className="game">
         {Array(NUM_ROWS * NUM_COLS)
