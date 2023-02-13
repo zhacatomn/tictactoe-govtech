@@ -73,7 +73,11 @@ const Game = () => {
     });
 
     return () => {
-      socket.emit("exitRoom", {}, () => {});
+      // On development, React likes to "double run" lifecycles. This will trick the backend into thinking
+      // that the client has left the room.
+      if (process.env.NODE_ENV !== "development") {
+        socket.emit("exitRoom", {}, () => {});
+      }
       socket.off("startGame");
       socket.off("updateGame");
       socket.off("endGame");
@@ -120,9 +124,9 @@ const Game = () => {
       `Room code: ${roomId}`
     ) : (
       <>
-        <span class="color-cross font-inherit">{`${playerNames[0]} (${PLAYER_TOKENS[0]})`}</span>{" "}
+        <span className="color-cross font-inherit">{`${playerNames[0]} (${PLAYER_TOKENS[0]})`}</span>{" "}
         vs{" "}
-        <span class="color-circle font-inherit">{`${playerNames[1]} (${PLAYER_TOKENS[1]})`}</span>
+        <span className="color-circle font-inherit">{`${playerNames[1]} (${PLAYER_TOKENS[1]})`}</span>
       </>
     );
   const messageContent =
