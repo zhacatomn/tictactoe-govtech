@@ -46,7 +46,14 @@ const Menu = () => {
         <button onClick={createRoom}>CREATE NEW GAME</button>
         <h2>OR</h2>
         <form onSubmit={joinRoom}>
-          <input type="text" placeholder="Enter room code" name="roomId" />
+          <label htmlFor="roomId">Room Code</label>
+          <br />
+          <input
+            type="text"
+            placeholder="Enter room code"
+            name="roomId"
+            id="roomId"
+          />
           <button type="submit">JOIN GAME</button>
         </form>
       </section>
