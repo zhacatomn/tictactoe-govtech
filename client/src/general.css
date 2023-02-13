@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+  font-family: "Arial";
+}
+*:not(h1, h2) {
+  font-size: 1.25rem;
+}
+
+.main-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-direction: column;
+  padding-bottom: 1rem;
+}
+
+.font-inherit {
+  font: inherit;
+}
