@@ -9,7 +9,7 @@ const joinRoom =
     if (room == null) {
       return callback({ error: "Room does not exist." });
     }
-    if (!room.gameStatus === gameStatusEnum.WAITING) {
+    if (!(room.gameStatus === gameStatusEnum.WAITING)) {
       return callback({ error: "The game in this room has already started." });
     }
     if (room.isPlayerInRoom(player)) {
@@ -17,6 +17,12 @@ const joinRoom =
     } else if (room.isRoomFull()) {
       return callback({ error: "The room is full." });
     }
+
+    // Disconnecting player from an existing room
+    if (player.room != null) {
+      player.room.removePlayer(player);
+    }
+
     socket.join(roomId);
     room.addPlayer(player);
     player.name = name;
