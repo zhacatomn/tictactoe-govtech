@@ -5,7 +5,7 @@ const cors = require("cors");
 const { Room } = require("./rooms");
 const Player = require("./players");
 const { info } = require("console");
-const { joinRoom, makeMove, disconnect } = require("./sockets");
+const { joinRoom, makeMove, disconnect } = require("./events");
 const { ROOM_ID_LENGTH } = require("./constants");
 
 const app = express();
