@@ -23,6 +23,10 @@ class Room {
     return this.players.length >= Room.PLAYER_LIMIT;
   }
 
+  isRoomEmpty() {
+    return this.players.length === 0;
+  }
+
   isPlayerInRoom(player) {
     return this.players.find((ele) => ele.isSameAs(player)) != null;
   }
@@ -36,7 +40,11 @@ class Room {
   }
 
   removePlayer(player) {
+    if (!this.isPlayerInRoom(player)) {
+      return false;
+    }
     player.room = null;
+    player.socket.leave(this.id);
     this.players = this.players.map((ele) => !player.isSameAs(ele));
   }
 
@@ -67,6 +75,7 @@ class Room {
     this.gameStatus = gameStatusEnum.ENDED;
     for (const player of this.players) {
       player.room = null;
+      player.socket.leave(this.id);
     }
   }
 
@@ -102,7 +111,20 @@ class Room {
     this.switchTurn();
   }
 
-  isGameOver() {
+  hasDrawn() {
+    if (this.hasWinner()) {
+      return false;
+    }
+    let isFilled = true;
+    for (let i = 0; i < NUM_ROWS; i++) {
+      for (let j = 0; j < NUM_COLS; j++) {
+        isFilled = isFilled && this.gameState[i][j] !== EMPTY_SPACE;
+      }
+    }
+    return isFilled;
+  }
+
+  hasWinner() {
     const isConnectedPair = (a, b) => a === b && a !== EMPTY_SPACE;
     const gameState = this.gameState;
     // Checking rows
