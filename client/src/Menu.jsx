@@ -7,7 +7,6 @@ const Menu = () => {
   const { name, setName } = useContext(NameContext);
   const navigate = useNavigate();
   const createRoom = (e) => {
-    console.log("Getting room ID");
     fetch("http://localhost:5000/createRoom", {
       method: "GET",
       credentials: "omit",

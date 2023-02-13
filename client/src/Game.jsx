@@ -71,6 +71,13 @@ const Game = () => {
       setGameResult(reason);
       setGameStatus(gameStatusEnum.ENDED);
     });
+
+    return () => {
+      socket.emit("exitRoom", {}, () => {});
+      socket.off("startGame");
+      socket.off("updateGame");
+      socket.off("endGame");
+    };
   }, []);
 
   if (isLoading) {

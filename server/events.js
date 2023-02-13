@@ -4,23 +4,19 @@ const { gameStatusEnum } = require("./rooms");
 const joinRoom =
   (io, socket, player) =>
   ({ name, roomId }, callback) => {
-    info("joinRoom request received");
+    info(`joinRoom request received from ${player.toString()}`);
     const room = global.roomIdToRoomMap.get(roomId);
     if (room == null) {
       return callback({ error: "Room does not exist." });
     }
-    if (!(room.gameStatus === gameStatusEnum.WAITING)) {
-      return callback({ error: "The game in this room has already started." });
-    }
     if (room.isPlayerInRoom(player)) {
       return callback();
-    } else if (room.isRoomFull()) {
+    }
+    if (room.isRoomFull()) {
       return callback({ error: "The room is full." });
     }
-
-    // Disconnecting player from an existing room
-    if (player.room != null) {
-      player.room.removePlayer(player);
+    if (!(room.gameStatus === gameStatusEnum.WAITING)) {
+      return callback({ error: "The game in this room has already started." });
     }
 
     socket.join(roomId);
@@ -81,7 +77,7 @@ const makeMove =
         ? `${room.getWaitingPlayer().name} has won.`
         : "Game ended in a draw.";
       io.to(room.id).emit("endGame", {
-        reason: reason,
+        reason,
       });
       room.endGame();
       global.roomIdToRoomMap.delete(room.id);
@@ -89,6 +85,32 @@ const makeMove =
 
     callback({ message: "Move made successfully." });
   };
+
+const exitRoom = (io, socket, player) => (_, callback) => {
+  const room = player.room;
+  if (room == null) {
+    return callback();
+  }
+  info(`${player.toString()} exited room ${room.id}.`);
+  if (room.gameStatus === gameStatusEnum.WAITING) {
+    room.removePlayer(player);
+    if (room.isRoomEmpty()) {
+      global.roomIdToRoomMap.delete(room.id);
+    }
+  } else if (room.gameStatus === gameStatusEnum.IN_PROGRESS) {
+    info(
+      `Game ended between ${room.getWaitingPlayer().toString()} and ${room
+        .getReadyPlayer()
+        .toString()} via room exiting.`
+    );
+    room.endGame();
+    global.roomIdToRoomMap.delete(room.id);
+    io.emit("endGame", {
+      reason: `${player.name ?? "Opponent"} has left the room.`,
+    });
+  }
+  callback();
+};
 
 const disconnect = (io, socket, player) => () => {
   global.socketToPlayerMap.delete(socket);
@@ -100,12 +122,9 @@ const disconnect = (io, socket, player) => () => {
   if (room.gameStatus === gameStatusEnum.WAITING) {
     room.removePlayer(player);
     if (room.isRoomEmpty()) {
-      // Removing rooms that are not in use
       global.roomIdToRoomMap.delete(room.id);
     }
-    return;
-  }
-  if (room.gameStatus === gameStatusEnum.IN_PROGRESS) {
+  } else if (room.gameStatus === gameStatusEnum.IN_PROGRESS) {
     info(
       `Game ended between ${room.getWaitingPlayer().toString()} and ${room
         .getReadyPlayer()
@@ -114,9 +133,9 @@ const disconnect = (io, socket, player) => () => {
     room.endGame();
     global.roomIdToRoomMap.delete(room.id);
     io.emit("endGame", {
-      reason: `Opponent has disconnected.`,
+      reason: `${player.name ?? "Opponent"} has disconnected.`,
     });
   }
 };
 
-module.exports = { joinRoom, makeMove, disconnect };
+module.exports = { joinRoom, makeMove, exitRoom, disconnect };

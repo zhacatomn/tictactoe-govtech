@@ -5,7 +5,7 @@ const cors = require("cors");
 const { Room } = require("./rooms");
 const Player = require("./players");
 const { info } = require("console");
-const { joinRoom, makeMove, disconnect } = require("./events");
+const { joinRoom, makeMove, disconnect, exitRoom } = require("./events");
 const { ROOM_ID_LENGTH } = require("./constants");
 
 const app = express();
@@ -40,6 +40,8 @@ io.on("connection", (socket) => {
   socket.on("joinRoom", joinRoom(io, socket, player));
 
   socket.on("makeMove", makeMove(io, socket, player));
+
+  socket.on("exitRoom", exitRoom(io, socket, player));
 
   socket.on("disconnect", disconnect(io, socket, player));
 });
