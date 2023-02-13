@@ -27,7 +27,7 @@ const connectionOptions = {
 
 const socket = io.connect(SERVER_URL, connectionOptions);
 
-function Game() {
+const Game = () => {
   const [gameState, setGameState] = useState(
     Array(NUM_ROWS)
       .fill(null)
@@ -108,7 +108,7 @@ function Game() {
   };
   const hasButtonClick =
     turn === turnToMove && gameStatus === gameStatusEnum.IN_PROGRESS;
-  const headerMessage =
+  const headerContent =
     gameStatus === gameStatusEnum.WAITING ? (
       `Room code: ${roomId}`
     ) : (
@@ -118,15 +118,15 @@ function Game() {
         <span class="color-circle font-inherit">{`${playerNames[1]} (${PLAYER_TOKENS[1]})`}</span>
       </>
     );
-  const topMessage =
+  const messageContent =
     gameStatus === gameStatusEnum.ENDED
       ? gameResult
       : gameStatus === gameStatusEnum.WAITING
       ? "Waiting for other player to connect..."
-      : `${playerNames[turn]}'s (${
+      : `${playerNames[turn]}'s turn (${
           turnToMove === turn ? "You" : "Opponent"
-        }) turn`;
-  const topMessageColor =
+        })`;
+  const messageColor =
     gameStatus === gameStatusEnum.IN_PROGRESS
       ? turn === 0
         ? "color-cross"
@@ -135,8 +135,8 @@ function Game() {
 
   return (
     <>
-      <h1 class="game-header">{headerMessage}</h1>
-      <h2 className={`game-message-top ${topMessageColor}`}>{topMessage}</h2>
+      <h1 class="game-header">{headerContent}</h1>
+      <h2 className={`game-message ${messageColor}`}>{messageContent}</h2>
       <div className="game">
         {Array(NUM_ROWS * NUM_COLS)
           .fill(null)
@@ -179,6 +179,6 @@ function Game() {
       )}
     </>
   );
-}
+};
 
 export default Game;

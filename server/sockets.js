@@ -61,7 +61,7 @@ const makeMove =
     if (error != null) {
       return callback(error);
     }
-    io.emit("updateGame", {
+    io.to(room.id).emit("updateGame", {
       gameState: room.gameState,
       turn: room.turn,
     });

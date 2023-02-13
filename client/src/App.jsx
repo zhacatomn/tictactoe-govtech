@@ -4,10 +4,36 @@ import "./general.css";
 import Menu from "./Menu";
 import Game from "./Game";
 
-export const NameContext = createContext();
+const ADJECTIVE_LIST = [
+  "Dancing",
+  "Happy",
+  "Excited",
+  "Thrilled",
+  "Glowing",
+  "Dashing",
+  "Delighted",
+  "Contented",
+];
+const NOUN_LIST = [
+  "Unicorn",
+  "Puppy",
+  "Kitten",
+  "Dragon",
+  "Pony",
+  "Bunny",
+  "Cockatoo",
+  "Giraffe",
+];
 
-function App() {
-  const [name, setName] = useState("Default Name");
+export const NameContext = createContext();
+const generateRandomName = () => {
+  const adjectiveIdx = Math.floor(Math.random() * ADJECTIVE_LIST.length);
+  const nounIdx = Math.floor(Math.random() * NOUN_LIST.length);
+  return ADJECTIVE_LIST[adjectiveIdx] + NOUN_LIST[nounIdx];
+};
+
+const App = () => {
+  const [name, setName] = useState(generateRandomName());
   return (
     <NameContext.Provider value={{ name, setName }}>
       <BrowserRouter>
@@ -20,6 +46,6 @@ function App() {
       </BrowserRouter>
     </NameContext.Provider>
   );
-}
+};
 
 export default App;
