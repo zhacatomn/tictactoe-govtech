@@ -21,7 +21,7 @@ const NOUN_LIST = [
   "Dragon",
   "Pony",
   "Bunny",
-  "Cockatoo",
+  "Parrot",
   "Giraffe",
 ];
 
