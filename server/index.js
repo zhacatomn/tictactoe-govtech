@@ -2,22 +2,26 @@ const express = require("express");
 const socketio = require("socket.io");
 const http = require("http");
 const cors = require("cors");
-const { Room, createRoom } = require("./rooms");
+const path = require("path");
+const { createRoom } = require("./rooms");
 const Player = require("./players");
 const { info } = require("console");
 const { joinRoom, makeMove, disconnect, exitRoom } = require("./events");
 const { ROOM_ID_LENGTH } = require("./constants");
+require("dotenv").config();
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-app.use(cors());
-
 global.roomIdToRoomMap = new Map();
 global.socketToPlayerMap = new Map();
 
-app.get("/createRoom", (req, res) => {
+if (process.env.NODE_ENV === "development") {
+  app.use(cors());
+}
+
+app.get("/server/createRoom", (req, res) => {
   // Generating random roon code
   info("Received createRoom GET request");
   let roomId = "";
@@ -45,6 +49,13 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", disconnect(io, socket, player));
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "../client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+  });
+}
 
 server.listen(process.env.PORT || 5000, () =>
   console.log(`Listening on port ${process.env.PORT || 5000}.`)

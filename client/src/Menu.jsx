@@ -7,7 +7,7 @@ const Menu = () => {
   const { name, setName } = useContext(NameContext);
   const navigate = useNavigate();
   const createRoom = (e) => {
-    fetch("http://localhost:5000/createRoom", {
+    fetch("http://localhost:5000/server/createRoom", {
       method: "GET",
       credentials: "omit",
     })
