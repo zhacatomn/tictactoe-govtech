@@ -137,3 +137,6 @@ They are simply managed using Javascript Maps, as opposed to a DBMS. The primary
 - Each `Room` is only alive for as long as the game session is on-going. (The moment a game ends, the `Room` is destroyed)
 
 **Relationship**: Each `Player` must be in 0 or 1 rooms, and each `Room` must have 0, 1, 2 players.
+
+Here's a simple architecture diagram summarising the design:
+![](img/arch_diagram.png)
