@@ -32,11 +32,7 @@ $ npm start
 
 ## Running Development
 
-If you wish to run development, some extra steps have to be taken.and Infrastructure Decisions
-
-### Summary
-
-The front-end interface design was designed purposely to help users with poor vision. Design decisions in
+If you wish to run development, some extra steps have to be taken.
 
 First, we need to re-configure the `.env` file on the server side. Edit the `server/.env` file on the server side to the following:
 
@@ -126,7 +122,7 @@ The server also emits 5 events:
 - `endGame`: Signals to the clients that the game has ended, with relevant information. Sends the following:
   - `reason (string)`: the reason why the has ended (Either by the game ending naturally or a player disconnecting)
 
-In additional to websockets, the server also has one `GET` route:
+In addition to websockets, the server also has one `GET` route:
 
 - `[GET] /server/createRoom`: creates a new room for a client. Returns the following:
   - `roomId (string)`: The room ID of the newly created room
