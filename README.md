@@ -4,7 +4,7 @@
 
 This is a web application built using React and NodeJS to allow multiple clients to play Tic-Tac-Toe using the concept
 of game sessions (Described as 'rooms' in the app).
-The UI design is catered specifically for visually-impaired users to facillitate their usage of this app.
+The UI design is catered specifically for visually-impaired users and to facilitate the usage of screen readers.
 
 ## Quick Start (Running Production)
 
@@ -69,7 +69,7 @@ Now you should be able to access the app at `http://localhost:3000/`
 
 ## Playing a Game
 
-This app uses the idea of "rooms" to facillitate game sessions.
+This app uses the idea of "rooms" to facilitate game sessions.
 When you first load up the app, you should be greeted with this screen:
 ![](img/menu.png)
 Here, a randomly generated name has been given to you, and you are free to change it to whatever you like.
@@ -94,13 +94,13 @@ Here are some design decisions that were made for this purpose:
 
 - Large fonts were used throughout the app (Standard font size was `1.25rem`)
 - Crosses and circles for the Tic-Tac-Toe game, as well as the players' names, were color-coded for better recognisability
-- Standard HTML landmarks were used throughout the app (eg. Usage of `<section>` and header `<h1>,<h2>...` tags) in order to facillitate screen readers
+- Standard HTML landmarks were used throughout the app (eg. Usage of `<section>` and header `<h1>,<h2>...` tags) in order to facilitate screen readers
 - Full capital letters used for buttons to aid readability
 
 ## Backend Architecture Design
 
 This application primarily uses **web sockets** to facilitate each game session.
-The backend receives 5 main events from the client:
+The server receives 5 events from the client:
 
 - `connect`: When a client connects to the socket
 - `joinRoom`: When a client joins a room. Receives the following:
@@ -111,7 +111,7 @@ The backend receives 5 main events from the client:
 - `exitRoom`: When a client exits the room
 - `disconnect`: When a client disconnects from the socket
 
-The backend also emits 5 events:
+The server also emits 5 events:
 
 - `startGame`: Signals to clients in the room that the game as started. Sends the following:
   - `initTurn (int)`: the starting turn of the game. Either 0 or 1.
@@ -124,3 +124,16 @@ The backend also emits 5 events:
   - `alert (string | null)`: a string if there is an alert message to be sent, otherwise `null` to indicate that the alert should be cleared
 - `endGame`: Signals to the clients that the game has ended, with relevant information. Sends the following:
   - `reason (string)`: the reason why the has ended (Either by the game ending naturally or a player disconnecting)
+
+In additional to websockets, the server also has one `GET` route:
+
+- `[GET] /server/createRoom`: creates a new room for a client. Returns the following:
+  - `roomId (string)`: The room ID of the newly created room
+
+2 main entities are being managed throughout the backend: `Player` and `Room`. `Player` essentially represents the connected users, while `Room` represent the game sessions.
+They are simply managed using Javascript Maps, as opposed to a DBMS. The primary reason for this is that the lifecycle of each entity is extremely short:
+
+- Each `Player` is only alive for as long as the user is connected to the socket
+- Each `Room` is only alive for as long as the game session is on-going. (The moment a game ends, the `Room` is destroyed)
+
+**Relationship**: Each `Player` must be in 0 or 1 rooms, and each `Room` must have 0, 1, 2 players.
