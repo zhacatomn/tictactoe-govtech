@@ -4,7 +4,7 @@
 
 This is a web application built using React and NodeJS to allow multiple clients to play Tic-Tac-Toe using the concept
 of game sessions (Described as 'rooms' in the app).
-The UI design is catered specifically for visually-impaired users and to facilitate the usage of screen readers.
+The UI design is catered specifically for users with sensory impairments and to facilitate the usage of screen readers.
 
 ## Quick Start (Running Production)
 
@@ -89,13 +89,14 @@ At this point, both players can click the "BACK TO MENU" button to leave the roo
 
 ## UI Design Decisions
 
-The front-end interface design was designed purposely to help users with poor vision.
+The front-end interface design was designed purposely to help users with sensory impairments.
 Here are some design decisions that were made for this purpose:
 
-- Large fonts were used throughout the app (Standard font size was `1.25rem`)
-- Crosses and circles for the Tic-Tac-Toe game, as well as the players' names, were color-coded for better recognisability
-- Standard HTML landmarks were used throughout the app (eg. Usage of `<section>` and header `<h1>,<h2>...` tags) in order to facilitate screen readers
+- Large fonts were used throughout the app (Standard font size was `1.25rem`) for better clarity
+- Crosses and circles for the Tic-Tac-Toe game, as well as the players' names, were color-coded for better recognisability (Red for X, Blue for O)
+- Standard HTML landmarks were used throughout the app (eg. Usage of `<section>` and header `<h1>,<h2>...` tags) in order to facilitate the use of screen readers
 - Full capital letters used for buttons to aid readability
+- Simple phrases were used in the UI to minimise complexity and ambiguity
 
 ## Backend Architecture Design
 
@@ -140,3 +141,10 @@ They are simply managed using Javascript Maps, as opposed to a DBMS. The primary
 
 Here's a simple architecture diagram summarising the design:
 ![](img/arch_diagram.png)
+
+## Features to Add
+
+- Way to view past games (Will require a DBMS to perform CRUD operations on the histories)
+- Way to spectate rooms (Currently, clients are rejected if the room is full)
+- More methods to improve user experience (e.g. auditory feedback on making a move, more colourful graphics)
+- Add more games beside Tic-Tac-Toe (e.g. Connect 4, Snakes and Ladders)
