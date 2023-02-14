@@ -34,7 +34,7 @@ $ npm start
 
 If you wish to run development, some extra steps have to be taken.
 
-First, we need to re-configure the `.env` file on the server side. Edit the `server/.env` file on the server side to the following:
+First, we need to re-configure the `.env` file on the server side. Edit the `server/.env` file to the following:
 
 ```
 PORT = 5000
@@ -51,7 +51,7 @@ $ npm start
 
 **Leave the command line active**.
 
-On a **separate** command line, navigate to the repository folder again. Now, we need run the client:
+On a **separate** command line, navigate to the repository folder again. Now, we need to run the client:
 
 ```
 $ cd client // navigate into the client folder
@@ -59,7 +59,7 @@ $ npm install // run this only if it's your FIRST TIME running the application
 $ npm start
 ```
 
-**Leave the command line active**.
+**Leave the command line active as well**.
 
 Now you should be able to access the app at `http://localhost:3000/`
 
@@ -93,6 +93,7 @@ Here are some design decisions that were made for this purpose:
 - Standard HTML landmarks were used throughout the app (eg. Usage of `<section>` and header `<h1>,<h2>...` tags) in order to facilitate the use of screen readers
 - Full capital letters used for buttons to aid readability
 - Simple phrases were used in the UI to minimise complexity and ambiguity
+- A standard font was used (Arial) to also improve readability
 
 ## Backend Architecture Design
 
