@@ -1,4 +1,4 @@
-# Tic Tac Toe App for GovTech Assessment
+# Tic Tac Toe App with Game Sessions
 
 *Author: Quek Jia Zhi, Shaun* 
 
