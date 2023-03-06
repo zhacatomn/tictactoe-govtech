@@ -1,9 +1,5 @@
 # Tic Tac Toe App with Game Sessions
 
-*Author: Quek Jia Zhi, Shaun* 
-
-**Link to the repository**: https://github.com/zhacatomn/tictactoe-govtech
-
 ## Overview
 
 This is a web application built using React and NodeJS to allow multiple clients to play Tic-Tac-Toe using the concept
